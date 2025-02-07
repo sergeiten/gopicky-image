@@ -11,7 +11,11 @@ import {
 } from "@/ui/shadcn/card";
 import { Button } from "@/ui/shadcn/button";
 import { Alert, AlertDescription } from "@/ui/shadcn/alert";
-import { ImageFile, ImageUploadResponse, UploadError } from "@/lib/definitions";
+import {
+  ImageFile,
+  ImageUploadResponse,
+  ImageActionError,
+} from "@/lib/definitions";
 import axios from "axios";
 import QualitySlider from "./QualitySlider";
 import { ImgComparisonSlider } from "@img-comparison-slider/react";
@@ -19,6 +23,7 @@ import { formatFileSize } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import Loader from "./Loader";
 import Dropzone from "react-dropzone";
+import DownloadButton from "./DownloadButton";
 
 const MAX_FILE_SIZE = 10; // Mb
 
@@ -29,7 +34,7 @@ const ImageUploader: React.FC = () => {
   const [response, setResponse] = useState<ImageUploadResponse>();
 
   const [imageData, setImageData] = useState<ImageFile | null>(null);
-  const [error, setError] = useState<UploadError>(null);
+  const [error, setError] = useState<ImageActionError>(null);
 
   const { mutate: uploadImage, isPending } = useMutation({
     mutationKey: ["uploadImage", imageData, quality],
@@ -249,7 +254,11 @@ const ImageUploader: React.FC = () => {
             <Button onClick={reset} variant="outline" disabled={isPending}>
               Clear
             </Button>
-            <Button disabled={isPending}>Download Compressed Image</Button>
+            <DownloadButton
+              disabled={isPending}
+              fileName={imageData.file.name}
+              fileUrl={response.fileUrl}
+            />
           </div>
         </>
       )}

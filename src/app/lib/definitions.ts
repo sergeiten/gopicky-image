@@ -3,7 +3,7 @@ export interface ImageFile {
   preview: string;
 }
 
-export type UploadError = {
+export type ImageActionError = {
   message: string;
 } | null;
 

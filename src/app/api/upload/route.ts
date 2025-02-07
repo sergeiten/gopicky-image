@@ -1,5 +1,5 @@
 import fs from "fs";
-import { NextRequest, NextResponse as NextServerResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import sharp from "sharp";
 
@@ -16,13 +16,12 @@ export async function POST(req: NextRequest) {
   const quality = validateQuality(params.get("quality"));
 
   if (!file) {
-    return new NextServerResponse(
-      JSON.stringify({ message: "No file uploaded" }),
-      { status: 400 },
-    );
+    return new NextResponse(JSON.stringify({ message: "No file uploaded" }), {
+      status: 400,
+    });
   }
 
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+  // await new Promise((resolve) => setTimeout(resolve, 5000));
 
   try {
     fs.mkdirSync(targetPath, { recursive: true });
@@ -42,10 +41,10 @@ export async function POST(req: NextRequest) {
     const sizeDiff = file.size - output.size;
     const percentage = Math.floor((sizeDiff * 100) / output.size) * -1;
 
-    return new NextServerResponse(
+    return new NextResponse(
       JSON.stringify({
         message: "File uploaded successfully",
-        fileUrl: `/uploads/${fileName}?lastupdated=${Date.now()}`,
+        fileUrl: `/uploads/${fileName}`,
         compressedSize: output.size,
         compressedPercentage: percentage,
       }),
@@ -53,7 +52,7 @@ export async function POST(req: NextRequest) {
     );
   } catch (error) {
     console.error("Error saving file:", error);
-    return new NextServerResponse(
+    return new NextResponse(
       JSON.stringify({
         message: "Error uploading file",
       }),
