@@ -6,3 +6,5 @@ services:
     image: with-docker-multi-env-production
     ports:
       - "3003:3000"
+    volumes:
+      - ${IMAGE_UPLOADS_DIRECTORY}:/app/public/uploads
