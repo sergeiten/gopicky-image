@@ -65,15 +65,25 @@ export async function POST(
   const fileExtension = filePath.split(".").pop()?.toLowerCase();
   const contentType = getContentType(fileExtension);
 
-  const buffer = fs.readFileSync(filePath);
+  try {
+    const buffer = fs.readFileSync(filePath);
 
-  const headers = new Headers();
-  headers.append("Content-Disposition", `attachment; filename="${fileName}"`);
-  headers.append("Content-Type", contentType);
+    const headers = new Headers();
+    headers.append("Content-Disposition", `attachment; filename="${fileName}"`);
+    headers.append("Content-Type", contentType);
 
-  return new Response(buffer, {
-    headers,
-  });
+    return new Response(buffer, {
+      headers,
+    });
+  } catch (error) {
+    console.error("Error saving file:", error);
+    return new NextResponse(
+      JSON.stringify({
+        message: "Error download file",
+      }),
+      { status: 500 },
+    );
+  }
 }
 
 function getContentType(extention?: string): string {
