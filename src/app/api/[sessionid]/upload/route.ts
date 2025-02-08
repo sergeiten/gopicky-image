@@ -1,3 +1,4 @@
+import { ALLOWED_MIME_TYPES } from "@/lib/definitions";
 import fs from "fs";
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
@@ -35,6 +36,15 @@ export async function POST(
     });
   }
 
+  if (!Object.values(ALLOWED_MIME_TYPES).includes(file.type)) {
+    return new NextResponse(
+      JSON.stringify({ message: "File type is not supported" }),
+      {
+        status: 400,
+      },
+    );
+  }
+
   // await new Promise((resolve) => setTimeout(resolve, 5000));
 
   try {
@@ -52,7 +62,6 @@ export async function POST(
 
       return new NextResponse(
         JSON.stringify({
-          message: "File created successfully",
           fileUrl: `/uploads/${sessionId}/${fileName}`,
           compressedSize: f.size,
           compressedPercentage: percentage,
@@ -65,7 +74,7 @@ export async function POST(
     const buffer = Buffer.from(arrayBuffer);
 
     const output = await sharp(buffer)
-      .jpeg({ quality: quality })
+      [getFunctionName(file.type)]({ quality: quality })
       .toFile(filePath);
 
     // fs.writeFileSync(filePath, buffer);
@@ -74,7 +83,6 @@ export async function POST(
 
     return new NextResponse(
       JSON.stringify({
-        message: "File uploaded successfully",
         fileUrl: `/uploads/${sessionId}/${fileName}`,
         compressedSize: output.size,
         compressedPercentage: percentage,
@@ -90,6 +98,14 @@ export async function POST(
       { status: 500 },
     );
   }
+}
+
+function getFunctionName(mime: string): "png" | "jpeg" {
+  if (mime === "image/png") {
+    return "png";
+  }
+
+  return "jpeg";
 }
 
 function calculatePercentage(

@@ -1,21 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import fs from "fs";
-
-type ContentTypeMap = {
-  [key: string]: string;
-};
-
-const DEFAULT_CONTENT_TYPE = "application/octet-stream";
-
-const contentTypeMap: ContentTypeMap = {
-  // svg: "image/svg+xml",
-  // ico: "image/x-icon",
-  png: "image/png",
-  jpg: "image/jpeg",
-  jpeg: "image/jpeg",
-  // pdf: "application/pdf",
-};
+import { ALLOWED_MIME_TYPES, DEFAULT_MIME_TYPE } from "@/lib/definitions";
 
 const targetPath = path.join(process.cwd(), "public");
 
@@ -88,12 +74,12 @@ export async function POST(
 
 function getContentType(extention?: string): string {
   if (!extention) {
-    return DEFAULT_CONTENT_TYPE;
+    return DEFAULT_MIME_TYPE;
   }
 
-  if (!Object.keys(contentTypeMap).includes(extention)) {
-    return DEFAULT_CONTENT_TYPE;
+  if (!Object.keys(ALLOWED_MIME_TYPES).includes(extention)) {
+    return DEFAULT_MIME_TYPE;
   }
 
-  return contentTypeMap[extention];
+  return ALLOWED_MIME_TYPES[extention];
 }

@@ -164,7 +164,7 @@ const ImageUploader: React.FC = () => {
                           ref={fileInputRef}
                           type="file"
                           className="hidden"
-                          accept="image/*"
+                          accept="image/png, image/jpeg, image/jpg"
                           onChange={(e) => {
                             const files = e.target.files;
 
@@ -236,20 +236,22 @@ const ImageUploader: React.FC = () => {
                 </div>
               </div>
 
-              <ImgComparisonSlider>
-                <img
-                  slot="first"
-                  src={imageData.preview}
-                  alt="Preview"
-                  className="rounded object-contain w-full h-auto"
-                />
-                <img
-                  slot="second"
-                  src={response.fileUrl}
-                  alt="Preview"
-                  className="rounded object-contain w-full h-auto"
-                />
-              </ImgComparisonSlider>
+              <div className="flex justify-center">
+                <ImgComparisonSlider>
+                  <img
+                    slot="first"
+                    src={imageData.preview}
+                    alt="Preview"
+                    className="rounded object-contain w-full h-auto"
+                  />
+                  <img
+                    slot="second"
+                    src={response.fileUrl}
+                    alt="Preview"
+                    className="rounded object-contain w-full h-auto"
+                  />
+                </ImgComparisonSlider>
+              </div>
             </CardContent>
           </Card>
 
