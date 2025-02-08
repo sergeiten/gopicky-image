@@ -24,6 +24,7 @@ import { useMutation } from "@tanstack/react-query";
 import Loader from "./Loader";
 import Dropzone from "react-dropzone";
 import DownloadButton from "./DownloadButton";
+import useSessionId from "@/hooks/use-session-id";
 
 const MAX_FILE_SIZE = 10; // Mb
 
@@ -36,6 +37,8 @@ const ImageUploader: React.FC = () => {
   const [imageData, setImageData] = useState<ImageFile | null>(null);
   const [error, setError] = useState<ImageActionError>(null);
 
+  const sessionId = useSessionId();
+
   const { mutate: uploadImage, isPending } = useMutation({
     mutationKey: ["uploadImage", imageData, quality],
     mutationFn: async () => {
@@ -47,7 +50,7 @@ const ImageUploader: React.FC = () => {
       formData.append("file", imageData.file);
 
       return axios
-        .post("/api/upload", formData, {
+        .post(`/api/${sessionId}/upload`, formData, {
           params: {
             quality: quality[0],
           },

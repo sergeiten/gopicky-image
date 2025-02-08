@@ -9,7 +9,8 @@ export type ImageActionError = {
 
 export interface ImageUploadResponse {
   message: string;
-  fileUrl?: string;
+  fileUrl: string;
+  fileId: string;
   compressedSize: number;
   compressedPercentage: number;
 }

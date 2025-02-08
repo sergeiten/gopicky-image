@@ -19,11 +19,24 @@ const contentTypeMap: ContentTypeMap = {
 
 const targetPath = path.join(process.cwd(), "public");
 
-export async function POST(req: NextRequest) {
-  const json = await req.json();
-  console.log(json);
+export async function POST(
+  req: NextRequest,
+  { params }: { params: Promise<{ sessionid: string }> },
+) {
+  const sessionId = (await params).sessionid;
 
-  const { fileUrl } = json;
+  if (!sessionId) {
+    return new NextResponse(
+      JSON.stringify({ message: "No session id specified" }),
+      {
+        status: 400,
+      },
+    );
+  }
+
+  const json = await req.json();
+
+  const { fileName, fileUrl } = json;
 
   if (!fileUrl) {
     return new NextResponse(
@@ -55,7 +68,7 @@ export async function POST(req: NextRequest) {
   const buffer = fs.readFileSync(filePath);
 
   const headers = new Headers();
-  headers.append("Content-Disposition", 'attachment; filename="image.jpg"');
+  headers.append("Content-Disposition", `attachment; filename="${fileName}"`);
   headers.append("Content-Type", contentType);
 
   return new Response(buffer, {
