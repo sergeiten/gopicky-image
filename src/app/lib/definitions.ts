@@ -26,3 +26,12 @@ export const ALLOWED_MIME_TYPES: MIMETypeMap = {
   jpg: "image/jpeg",
   jpeg: "image/jpeg",
 };
+
+export type Upload = {
+  sessionId: string;
+  fileName: string;
+  fileExt: string;
+  fileSize: number;
+  compressedQuality: number;
+  compressedSize: number;
+};

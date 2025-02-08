@@ -61,8 +61,9 @@ export async function POST(
     return new Response(buffer, {
       headers,
     });
-  } catch (error) {
-    console.error("Error saving file:", error);
+  } catch (e) {
+    console.error("failed to download file:", e);
+
     return new NextResponse(
       JSON.stringify({
         message: "Error download file",

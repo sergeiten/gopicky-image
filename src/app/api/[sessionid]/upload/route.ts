@@ -1,3 +1,4 @@
+import { insertUpload } from "@/db/insertUpload";
 import { ALLOWED_MIME_TYPES } from "@/lib/definitions";
 import fs from "fs";
 import { NextRequest, NextResponse } from "next/server";
@@ -45,8 +46,6 @@ export async function POST(
     );
   }
 
-  // await new Promise((resolve) => setTimeout(resolve, 5000));
-
   try {
     const uploadPath = path.join(targetPath, sessionId);
 
@@ -73,13 +72,24 @@ export async function POST(
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
+    const fn = getFunctionName(file.type);
+
     const output = await sharp(buffer)
-      [getFunctionName(file.type)]({ quality: quality })
+      [fn]({ quality: quality })
       .toFile(filePath);
 
-    // fs.writeFileSync(filePath, buffer);
-
     const percentage = calculatePercentage(file.size, output.size);
+
+    insertUpload({
+      sessionId: sessionId,
+      fileName: file.name,
+      fileExt: fn,
+      fileSize: file.size,
+      compressedQuality: quality,
+      compressedSize: output.size,
+    }).catch((e) => {
+      console.error("failed to insert upload:", e);
+    });
 
     return new NextResponse(
       JSON.stringify({
@@ -89,8 +99,9 @@ export async function POST(
       }),
       { status: 200 },
     );
-  } catch (error) {
-    console.error("Error saving file:", error);
+  } catch (e) {
+    console.error("failed to store file:", e);
+
     return new NextResponse(
       JSON.stringify({
         message: "Error uploading file",

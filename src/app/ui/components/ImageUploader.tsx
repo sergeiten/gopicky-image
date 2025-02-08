@@ -131,7 +131,7 @@ const ImageUploader: React.FC = () => {
       <Card className="mb-6 relative">
         <CardHeader>
           <CardTitle className="text-center">Compress IMAGE</CardTitle>
-          <CardDescription>
+          <CardDescription className="text-center">
             Compress JPG or PNG with the best quality and compression. Reduce
             the filesize of your image at once.
           </CardDescription>
