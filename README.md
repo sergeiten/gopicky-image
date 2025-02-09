@@ -21,7 +21,7 @@ The `IMAGE_UPLOAD_DIR` and `DB_DATADIR` must be absolute paths.
 IMAGE_UPLOAD_DIR=
 
 DB_USER="user"
-DB_HOST="127.0.0.1"
+DB_HOST="database"
 DB_PORT=5432
 DB_PASSWORD="password"
 DB_DATABASE="database_name"
@@ -29,6 +29,8 @@ DB_DATABASE="database_name"
 # Absolute path to directory for storing database files
 DB_DATADIR=
 ```
+
+You do need to change `DB_HOST` as it uses docker compose service name.
 
 #### Run docker containers
 
