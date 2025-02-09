@@ -7,7 +7,7 @@ services:
     ports:
       - "3001:3000"
     volumes:
-      - ${IMAGE_UPLOAD_DIR}:/app/public/uploads
+      - ${IMAGE_UPLOAD_DIR}:/app/uploads
   database:
     image: postgres:14-alpine
     ports:
