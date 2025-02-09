@@ -4,7 +4,7 @@ This is a simple image compression application based on [Next.js](https://nextjs
 
 ## Requirements
 
-To run application, you need Docker installed. The following Docker version are used while developing:
+To run application, you need Docker installed. The following Docker version is used while developing:
 
 ```
 docker 27.5.1
