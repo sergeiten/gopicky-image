@@ -68,5 +68,6 @@ The application stores basic image compression information in the database, whic
 
 - Allow users to upload multiple images at once
 - Allow users to resize image
+- Supports more image formats (GIF, WebP)
 - Add support cloud store services (AWS S3, Cloudflare)
 - Account creation to save image compression history
