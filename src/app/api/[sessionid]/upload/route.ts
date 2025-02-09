@@ -1,4 +1,5 @@
 import { insertUpload } from "@/db/insertUpload";
+import { targetPath } from "@/lib/consts";
 import { ALLOWED_MIME_TYPES } from "@/lib/definitions";
 import fs from "fs";
 import { NextRequest, NextResponse } from "next/server";
@@ -6,8 +7,6 @@ import path from "path";
 import sharp from "sharp";
 
 const DEFAULT_QUALITY = 50;
-
-const targetPath = path.join(process.cwd(), "public/uploads");
 
 export async function POST(
   req: NextRequest,
@@ -61,7 +60,7 @@ export async function POST(
 
       return new NextResponse(
         JSON.stringify({
-          fileUrl: `/uploads/${sessionId}/${fileName}`,
+          fileName: fileName,
           compressedSize: f.size,
           compressedPercentage: percentage,
         }),
@@ -93,7 +92,7 @@ export async function POST(
 
     return new NextResponse(
       JSON.stringify({
-        fileUrl: `/uploads/${sessionId}/${fileName}`,
+        fileName: fileName,
         compressedSize: output.size,
         compressedPercentage: percentage,
       }),

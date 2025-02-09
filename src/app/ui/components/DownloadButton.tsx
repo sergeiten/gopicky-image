@@ -7,11 +7,15 @@ import useSessionId from "@/hooks/use-session-id";
 
 interface Props {
   fileName: string;
-  fileUrl: string;
+  attachmentName: string;
   disabled?: boolean;
 }
 
-const DownloadButton = ({ fileName, fileUrl, disabled = false }: Props) => {
+const DownloadButton = ({
+  fileName,
+  attachmentName,
+  disabled = false,
+}: Props) => {
   const { toast } = useToast();
   const sessionId = useSessionId();
 
@@ -22,7 +26,7 @@ const DownloadButton = ({ fileName, fileUrl, disabled = false }: Props) => {
           `/api/${sessionId}/download`,
           {
             fileName,
-            fileUrl,
+            attachmentName,
           },
           {
             headers: {
@@ -37,7 +41,7 @@ const DownloadButton = ({ fileName, fileUrl, disabled = false }: Props) => {
       try {
         const link = document.createElement("a");
         link.href = URL.createObjectURL(data);
-        link.download = fileName;
+        link.download = attachmentName;
         link.click();
         link.remove();
       } catch (e) {

@@ -200,7 +200,7 @@ const ImageUploader: React.FC = () => {
         </CardContent>
       </Card>
 
-      {imageData && response?.fileUrl && (
+      {imageData && response?.fileName && (
         <>
           <Card className="mb-6 relative">
             {isPending && <Loader />}
@@ -246,7 +246,7 @@ const ImageUploader: React.FC = () => {
                   />
                   <img
                     slot="second"
-                    src={response.fileUrl}
+                    src={`/uploads/${sessionId}/${response.fileName}`}
                     alt="Preview"
                     className="rounded object-contain w-full h-auto"
                   />
@@ -261,8 +261,8 @@ const ImageUploader: React.FC = () => {
             </Button>
             <DownloadButton
               disabled={isPending}
-              fileName={imageData.file.name}
-              fileUrl={response.fileUrl}
+              fileName={response.fileName}
+              attachmentName={imageData.file.name}
             />
           </div>
         </>

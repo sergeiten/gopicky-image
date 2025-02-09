@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import fs from "fs";
 import { ALLOWED_MIME_TYPES, DEFAULT_MIME_TYPE } from "@/lib/definitions";
-
-const targetPath = path.join(process.cwd(), "public");
+import { targetPath } from "@/lib/consts";
 
 export async function POST(
   req: NextRequest,
@@ -22,9 +21,9 @@ export async function POST(
 
   const json = await req.json();
 
-  const { fileName, fileUrl } = json;
+  const { fileName, attachmentName } = json;
 
-  if (!fileUrl) {
+  if (!fileName) {
     return new NextResponse(
       JSON.stringify({
         message: "Requested image not found",
@@ -35,7 +34,7 @@ export async function POST(
     );
   }
 
-  const filePath = path.join(targetPath, fileUrl);
+  const filePath = path.join(targetPath, sessionId, fileName);
 
   if (!fs.existsSync(filePath)) {
     return new NextResponse(
@@ -55,7 +54,10 @@ export async function POST(
     const buffer = fs.readFileSync(filePath);
 
     const headers = new Headers();
-    headers.append("Content-Disposition", `attachment; filename="${fileName}"`);
+    headers.append(
+      "Content-Disposition",
+      `attachment; filename="${attachmentName}"`,
+    );
     headers.append("Content-Type", contentType);
 
     return new Response(buffer, {
