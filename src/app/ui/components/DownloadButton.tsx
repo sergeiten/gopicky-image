@@ -3,21 +3,21 @@ import { Button } from "@/ui/shadcn/button";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useToast } from "@/hooks/use-toast";
-import useSessionId from "@/hooks/use-session-id";
 
 interface Props {
+  sessionId: string;
   fileName: string;
   attachmentName: string;
   disabled?: boolean;
 }
 
 const DownloadButton = ({
+  sessionId,
   fileName,
   attachmentName,
   disabled = false,
 }: Props) => {
   const { toast } = useToast();
-  const sessionId = useSessionId();
 
   const { mutate: download, isPending } = useMutation({
     mutationFn: async () => {

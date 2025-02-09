@@ -120,6 +120,10 @@ const ImageUploader: React.FC = () => {
     setResponse(undefined);
   };
 
+  if (!sessionId) {
+    return null;
+  }
+
   return (
     <div className="w-full max-w-6xl mx-auto p-4">
       {error && (
@@ -260,6 +264,7 @@ const ImageUploader: React.FC = () => {
               Clear
             </Button>
             <DownloadButton
+              sessionId={sessionId}
               disabled={isPending}
               fileName={response.fileName}
               attachmentName={imageData.file.name}
