@@ -14,23 +14,21 @@ docker 27.5.1
 
 #### Create .env.dev file and set env variables
 
-The `IMAGE_UPLOAD_DIR` and `DB_DATADIR` must be absolute paths.
+The `IMAGE_UPLOAD_DIR` and `DB_DATADIR` must be absolute paths. You **don't** need to change `DB_HOST` as it uses docker compose service name. Example of .env.dev file:
 
 ```
 # Absolute path to directory for storing uploaded images
-IMAGE_UPLOAD_DIR=
+IMAGE_UPLOAD_DIR=/directory/for/uploads
 
-DB_USER="user"
+DB_USER="gopicky"
 DB_HOST="database"
 DB_PORT=5432
-DB_PASSWORD="password"
-DB_DATABASE="database_name"
+DB_PASSWORD="gopicky"
+DB_DATABASE="gopicky"
 
 # Absolute path to directory for storing database files
-DB_DATADIR=
+DB_DATADIR=/directory/for/database/files
 ```
-
-You do need to change `DB_HOST` as it uses docker compose service name.
 
 #### Run docker containers
 
