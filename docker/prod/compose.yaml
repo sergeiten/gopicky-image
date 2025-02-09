@@ -1,9 +1,9 @@
 services:
-  with-docker-multi-env-production:
+  app:
     build:
       context: ../../
       dockerfile: docker/prod/Dockerfile
-    image: with-docker-multi-env-production
+    image: gopicky-image-app
     ports:
       - "3003:3000"
     volumes:
@@ -22,6 +22,6 @@ services:
     build:
       context: ../../
       dockerfile: docker/cleanup/Dockerfile
-    image: gopicky-cleanup
+    image: gopicky-image-cleanup
     volumes:
       - ${IMAGE_UPLOAD_DIR}:/uploads
